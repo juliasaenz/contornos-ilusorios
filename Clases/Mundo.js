@@ -76,9 +76,9 @@ export class Mundo {
   }
   crearFondo() {
     this.escena.background = new THREE.Color(0x030002);
-    //this.escena.fog = new THREE.Fog(0x010102, 1, 30);
+    this.escena.fog = new THREE.Fog(0x010102, 1, 30);
 
-    this.bloomPass.strength = params.bloomStrength + 2;
+    this.bloomPass.strength = params.bloomStrength + 1.8;
 
     const planeSize = 400;
 

@@ -11,7 +11,8 @@ import {
   elegirSonidoAzar,
   colorRandom,
   booleanRandom,
-  scale
+  scale,
+  colorOscuro
 } from './calculos.js'
 
 
@@ -141,15 +142,16 @@ export function cargarSonido(listener, archivo, fig) {
     sonido.setBuffer(buffer);
     sonido.setRefDistance(0.7);
 
-    var m = Math.random() * 1.5 + 0.8;
-    if (fig.activo) {
-      m = 0.8
+    var m = 0.8;
+    if (fig != null && !fig.activo) {
+      m = Math.random() * 1.5 + 0.8;
     }
     sonido.setRolloffFactor(m);
     //console.log(m);
     //entre 0.5 y 0.22
     sonido.setLoop(true);
-    sonido.setVolume(4);
+    ////sonido.setVolume(4);
+    sonido.setVolume(1);
     sonido.play();
     sonido.setDistanceModel("exponential");
   });
@@ -157,67 +159,11 @@ export function cargarSonido(listener, archivo, fig) {
   return sonido;
 }
 
-
-////////////////////////////////// Customización //////////////////////////////
-
-// Crea las dos formas para la Customización A y las agrega al mundo
-export function crearFormasInicio(escena) {
-  const cubo = crearInstancia('cubo', "#FFFFFF", -3, 0.5, -4);
-  escena.add(cubo[0]);
-  cubo[1].position.set(0, 0, 0);
-  cubo[0].add(cubo[1]);
-
-  const cono = crearInstancia('cono', "#FFFFFF", 3, 0.5, -4);
-  escena.add(cono[0]);
-  cono[1].position.set(0, 0.2, 0);
-  cono[0].add(cono[1]);
-}
-
-function botonesColor(colores, botones) {
-  var i = 0;
-  const geometry = new THREE.PlaneGeometry(0.06, 0.18);
-  for (const key in colores) {
-    const material = new THREE.MeshBasicMaterial({
-      color: colores[key]
-    });
-    const circle = new THREE.Mesh(geometry, material);
-    circle.position.set(-1.8, 1 - i * 0.18, 0);
-    i++;
-    botones.add(circle);
+export function eliminarSonido(lista){
+  if (lista[1].children.length > 1) {
+    lista[1].children[1].stop();
+    lista[1].remove(lista[1].children[1])
   }
-}
-
-function botonesSonido(listener, botones) {
-  var sonidos = [];
-  for (var i = 0; i < 5; i++) {
-    const geometry = new THREE.CircleGeometry(0.04, 32);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xAAAAAA
-    });
-    const circle = new THREE.Mesh(geometry, material);
-    circle.position.set(1.8, 0.5 - i * 0.22, 0);
-
-    botones.add(circle);
-    sonidos[i] = elegirSonidoAzar();
-  }
-  return sonidos;
-}
-
-function botonContinuar(botones) {
-  const geometry = new THREE.CircleGeometry(0.05, 32);
-  const material = new THREE.MeshBasicMaterial({
-    color: 0xDDDDDD
-  });
-  const boton = new THREE.Mesh(geometry, material);
-  boton.position.set(0, -0.8, 0);
-
-  botones.add(boton);
-}
-
-export function crearBotones(botones, listener, colores) {
-  botonesColor(colores, botones);
-  botonesSonido(listener, botones);
-  botonContinuar(botones)
 }
 
 /////////////////////////////// Espacio 3D ////////////////////////////////////
@@ -227,7 +173,7 @@ export function crearFormaUsuario(escena, listener, usuario) {
   escena.add(modelo[0]);
   modelo[0].add(modelo[1]);
   modelo[1].position.y = 0;
-  //modelo[0].add( cargarSonido(listener, usuario.sonido));
+  modelo[0].add( cargarSonido(listener, usuario.sonido));
 
   modelo[0].geometry.computeBoundingBox();
   return modelo[0];
@@ -257,7 +203,8 @@ function agregarModelo(listener, f) {
   m[0].add(m[1]);
   m[0].add(cargarSonido(listener, f.sonido, f));
   if (f.activo) {
-    m[1].material.color.set(m[0].material.color);
+    //m[1].material.color.set(m[0].material.color);
+    m[1].material.color.set(colorOscuro(m[0].material.color));
   }
 
   m[0].geometry.computeBoundingBox();
@@ -307,88 +254,6 @@ export function posInicioUsuario(usuario, red, indicesSimilitud) {
   const j = Math.random() * 3.5 + 1;
   usuario.x = red[maxPos].x + k;
   usuario.z = red[maxPos].z + j;
-}
-
-export function rotacion(orientacion, e, usuario, colision, lastKey) {
-  switch (e.keyCode) {
-    //derecha
-    case 37:
-      if (e.keyCode != colision) {
-        switch (orientacion) {
-          case "frente":
-            usuario.x -= 0.2;
-            break;
-          case "izquierda":
-            usuario.z += 0.2;
-            break;
-          case "derecha":
-            usuario.z -= 0.2;
-            break;
-          case "espalda":
-            usuario.x += 0.2;
-            break;
-        }
-      }
-      break;
-      //arriba
-    case 38:
-      if (e.keyCode != colision) {
-        switch (orientacion) {
-          case "frente":
-            usuario.z -= 0.2;
-            break;
-          case "izquierda":
-            usuario.x -= 0.2;
-            break;
-          case "derecha":
-            usuario.x += 0.2;
-            break;
-          case "espalda":
-            usuario.z += 0.2;
-            break;
-        }
-      }
-      break;
-      //izquierda
-    case 39:
-      if (e.keyCode != colision) {
-        switch (orientacion) {
-          case "frente":
-            usuario.x += 0.2;
-            break;
-          case "izquierda":
-            usuario.z -= 0.2;
-            break;
-          case "derecha":
-            usuario.z += 0.2;
-            break;
-          case "espalda":
-            usuario.x -= 0.2;
-            break;
-        }
-      }
-      break;
-      //abajo
-    case 40:
-      if (e.keyCode != colision) {
-        switch (orientacion) {
-          case "frente":
-            usuario.z += 0.2;
-            break;
-          case "izquierda":
-            usuario.x += 0.2;
-            break;
-          case "derecha":
-            usuario.x -= 0.2;
-            break;
-          case "espalda":
-            usuario.z -= 0.2;
-            break;
-        }
-      }
-      break;
-  }
-  lastKey = e.keyCode;
 }
 
 ////////// Para debuggeo

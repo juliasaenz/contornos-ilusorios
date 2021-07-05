@@ -1,0 +1,11 @@
+export function booleanRandom(){
+  const m = Math.random();
+  if (m > 0.8){
+    return true;
+  } else {
+    return false;
+  }
+}
+export function scale(number, inMin, inMax, outMin, outMax) {
+  return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}

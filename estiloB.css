@@ -1,0 +1,556 @@
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Helvetica, sans-serif;
+}
+
+body {
+  background: #030303;
+  color: #FFF;
+}
+
+p {
+  position: absolute;
+}
+
+#blocker, #instructions, #play, .range-input {
+  z-index: 1;
+}
+
+/* inicio botones salas */
+
+div.grupo {
+  margin: none;
+  margin-top: 1em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  height: 100%;  
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  background: rgba(3,3,3,0.5);
+}
+
+.salas {
+  background: #030303;
+  margin: 1em;
+  padding: 1%;
+  cursor: pointer;
+  border: none;
+  border-bottom: solid black 1.5px;
+  color: #FFF;
+  height: 2em;
+}
+
+.salas:hover {
+  animation: borde 5s ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes borde {
+  from {
+    border-color: inherit;
+  }
+
+  to {
+    border-color: white
+  }
+}
+
+#abrirSalas {
+  background: #030303;
+  margin: 10px;
+  font-size: 20px;
+  position: absolute;
+  top: 47%;
+  left: 2%;
+  cursor: pointer;
+  border: none;
+  color: #FFF;
+  z-index: 3;
+}
+
+/* slider */
+.range-input {
+  position: absolute;
+  top: 89%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.range-input input {
+  -webkit-appearance: none;
+  width: 400px;
+  height: 2px;
+  background: #FAFAFA;
+  border: none;
+  outline: none;
+}
+
+::-webkit-slider-thumb, ::-moz-range-thumb {
+  -webkit-appearance: none;
+  /* Override default look */
+  appearance: none;
+  width: 15px;
+  /* Set a specific slider handle width */
+  height: 15px;
+  /* Slider handle height */
+  background: #030303;
+  /* Green background */
+  border-color: #FAFAFA;
+  border-width: 2px;
+  border-radius: 1px;
+  cursor: pointer;
+  /* Cursor on hover */
+}
+
+.range-input .value {
+  color: #FAFAFA;
+  text-align: center;
+  font-weight: 600;
+  line-height: 40px;
+  height: 40px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.range-input .value div {
+  transition: all 300ms ease-in-out;
+}
+
+/* instrucciones */
+#blocker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #030303;
+}
+
+#instructions {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+}
+
+/* botones */
+button {
+  margin: 20px;
+  outline: none;
+}
+
+.continuar {
+  width: 130px;
+  height: 45px;
+  left: 82%;
+  top: 82%;
+  background: #030303;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  position: absolute;
+  display: block;
+  color: white;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  z-index: 1;
+}
+
+.continuar span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+}
+
+.continuar:before,
+.continuar:after {
+  position: absolute;
+  content: "";
+  height: 0%;
+  width: 2px;
+  background: white;
+}
+
+.continuar:before {
+  right: 0;
+  top: 0;
+  transition: all 500ms ease;
+}
+
+.continuar:after {
+  left: 0;
+  bottom: 0;
+  transition: all 500ms ease;
+}
+
+.continuar:hover:enabled {
+  color: white;
+  background: transparent;
+}
+
+.continuar:hover:enabled:before {
+  transition: all 500ms ease;
+  height: 100%;
+}
+
+.continuar:hover:enabled:after {
+  transition: all 500ms ease;
+  height: 100%;
+}
+
+.continuar:enabled span:before,
+.continuar:enabled span:after {
+  position: absolute;
+  content: "";
+  background: white;
+}
+
+.continuar:disabled {
+  background: Transparent;
+  color: Transparent;
+  cursor: default;
+}
+
+.continuar span:before {
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 1px;
+  transition: all 500ms ease;
+}
+
+.continuar span:after {
+  right: 0;
+  bottom: 0;
+  width: 0%;
+  height: 1px;
+  transition: all 500ms ease;
+}
+
+.continuar span:hover:before {
+  width: 100%;
+}
+
+.continuar span:hover:after {
+  width: 100%;
+}
+
+/* checkbox */
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: Transparent;
+}
+
+.checkbox {
+  display: block;
+  cursor: pointer;
+}
+
+label {
+  /*position: fixed;*/
+  position: relative;
+  padding-top: 10px;
+  width: 80px;
+}
+
+.checkbox>input {
+  height: 20px;
+  width: 90px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  transition-duration: 0.1s;
+  background-color: Transparent;
+  cursor: pointer;
+}
+
+/* Opciones Colores */
+.checkbox>input,
+.checkbox>input:checked,
+.checkbox>input:active {
+  border: 1px solid #FAFAFA;
+}
+
+.checkbox>input:checked {
+  background-color: #FAFAFA;
+  height: 30px;
+}
+
+/* rosa */
+#rosa, #rosa:checked, #rosa:active {
+  border: 1px solid #FC3DC9;
+}
+
+#rosa:checked {
+  background-color: #FC3DC9;
+}
+
+/* rojo */
+#rojo, #rojo:checked, #rojo:active {
+  border: 1px solid #FB3030;
+}
+
+#rojo:checked {
+  background-color: #FB3030;
+}
+
+/* fucsia */
+#fucsia, #fucsia:checked, #fucsia:active {
+  border: 1px solid #F43F5E;
+}
+
+#fucsia:checked {
+  background-color: #F43F5E;
+}
+
+/* naranja */
+#naranja, #naranja:checked, #naranja:active {
+  border: 1px solid #F97316;
+}
+
+#naranja:checked {
+  background-color: #F97316;
+}
+
+/* oro */
+#oro, #oro:checked, #oro:active {
+  border: 1px solid #F2B311;
+}
+
+#oro:checked {
+  background-color: #F2B311;
+}
+
+/* amarillo */
+#amarillo, #amarillo:checked, #amarillo:active {
+  border: 1px solid #FBFF20;
+}
+
+#amarillo:checked {
+  background-color: #FBFF20;
+}
+
+/* verde */
+#verde, #verde:checked, #verde:active {
+  border: 1px solid #A3E635;
+}
+
+#verde:checked {
+  background-color: #A3E635;
+}
+
+/* celeste */
+#celeste, #celeste:checked, #celeste:active {
+  border: 1px solid #00FFF9;
+}
+
+#celeste:checked {
+  background-color: #00FFF9;
+}
+
+/* cian */
+#esmeralda, #esmeralda:checked, #esmeralda:active {
+  border: 1px solid #4ADE80;
+}
+
+#esmeralda:checked {
+  background-color: #4ADE80;
+}
+
+/* azul */
+#azul, #azul:checked, #azul:active {
+  border: 1px solid #016DF6;
+}
+
+#azul:checked {
+  background-color: #016DF6;
+}
+
+/* violeta */
+#violeta, #violeta:checked, #violeta:active {
+  border: 1px solid #9F34D8;
+}
+
+#violeta:checked {
+  background-color: #9F34D8;
+}
+
+/* lila */
+#lila, #lila:checked, #lila:active {
+  border: 1px solid #C86DDE;
+}
+
+#lila:checked {
+  background-color: #C86DDE;
+}
+
+/* input de texto */
+input,
+span,
+label,
+textarea {
+  border: none;
+}
+
+textarea:focus,
+input:focus {
+  outline: 0;
+}
+
+/* Question */
+input.question,
+textarea.question {
+  font-size: 18px;
+  border-radius: 0px;
+  margin: 0;
+  border: none;
+  width: 20%;
+  background: Transparent;
+  transition: padding-top 0.2s ease, margin-top 0.2s ease;
+  overflow-x: hidden;
+  /* Hack to make "rows" attribute apply in Firefox. */
+  position: absolute;
+  left: 42%;
+  top: 85%;
+  align-content: center;
+}
+
+/* Underline and Placeholder */
+input.question+label,
+textarea.question+label {
+  align-content: center;
+  display: block;
+  position: absolute;
+  left: 42%;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  width: 20%;
+  top: 90%;
+  border-top: 1px solid grey;
+  -webkit-transition: width 0.4s ease;
+  transition: width 0.4s ease;
+  height: 2px;
+}
+
+input.question+label {
+  width: 5%;
+}
+
+input.question:focus+label,
+textarea.question:focus+label {
+  width: 15%;
+}
+
+input.question:focus,
+input.question:valid {
+  padding-top: 5px;
+}
+
+textarea.question:valid,
+textarea.question:focus {
+  margin-top: 5px;
+}
+
+input.question:focus+label>span,
+input.question:valid+label>span {
+  top: -60px;
+  color: #030303;
+}
+
+textarea.question:focus+label>span,
+textarea.question:valid+label>span {
+  top: -60px;
+  font-size: 18px;
+  color: #333;
+}
+
+input.question:valid+label,
+textarea.question:valid+label {
+  border-color: white;
+}
+
+input.question:invalid,
+textarea.question:invalid {
+  box-shadow: none;
+}
+
+textarea:focus, input:focus, input:valid {
+  color: #FAFAFA;
+  outline: none;
+}
+
+input.question+label>span,
+textarea.question+label>span {
+  margin: 0;
+  position: absolute;
+  color: grey;
+  font-size: 18px;
+  top: -30px;
+  left: 0%;
+  -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+input[type="submit"] {
+  -webkit-transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  display: block;
+  opacity: 0;
+  margin: 10px 0 0 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background: #EEE;
+}
+
+input[type="submit"]:active {
+  background: #999;
+}
+
+input.question:valid~input[type="submit"], textarea.question:valid~input[type="submit"] {
+  -webkit-animation: appear 1s forwards;
+  animation: appear 1s forwards;
+}
+
+input.question:invalid~input[type="submit"], textarea.question:invalid~input[type="submit"] {
+  display: none;
+}
+
+@-webkit-keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}

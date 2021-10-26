@@ -1,94 +1,24 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr">
-
+<html lang="es">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <!-- <link rel="modulepreload" href="/Funciones/customizacion.js"> -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estiloB.css">
+    <script async="async" defer="defer" id="codigo" type="module" src="script.js"></script>
     <title>
-      Tesina - Julia Saenz
+      Versión 3.4
     </title>
-    <style>
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background-color: rgb(1, 1, 1);
-        font-family: 'Source Code Pro', monospace;
-        text-align: center;
-        overflow: hidden;
-      }
-      p {
-        color: #FAFAFA;
-        background-color: Transparent;
-        position: absolute;
-        text-align: left;
-      }
-      input {
-        color: #FAFAFA;
-        position: absolute;
-        font-family: 'Source Code Pro', monospace;
-        background-color: Transparent;
-      }
-      #bContinuar {
-        top: 85%;
-        left: 80%;
-        font-size: 30px;
-        background-repeat: no-repeat;
-        border: none;
-      }
-      #dato {
-        text-align: left;
-        opacity: 1;
-        color: #FAFAFA;
-        top: 35%;
-        left: 80%;
-      }
-      #nombre {
-        top: 80%;
-        left: 40%;
-        font-size: 24px;
-        text-align: "center";
-      }
-      #blocker {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.8);
-      }
-      #instructions {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        font-size: 14px;
-        cursor: pointer;
-        position: absolute;
-      }
-    </style>
-
   </head>
-
   <body>
+    <div id="botonera" class="frame"></div>
     <div id="blocker">
       <div id="instructions">
-        <p id="tins" style="font-size:24px"></p>
         <p id="play" style="font-size:24px">
-          <br/><br/><br/><br/><br/>
-          Haga click para entrar
+          Se recomienda usar auriculares para la experiencia
+          <br/>
+          Cargando espacio
         </p>
       </div>
-    </div>
-
-    <script id="codigo" type="module" src="./script1.js"></script>
-    <!-- <input id="nombre" type="text" placeholder="Nombre"/> -->
-    <div>
-      <input id="bContinuar" type="button" value=""/>
     </div>
   </body>
 

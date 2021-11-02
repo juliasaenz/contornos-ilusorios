@@ -1,8 +1,13 @@
-import * as THREE from 'https://unpkg.com/three@0.121.1/build/three.module.js';
-import { Mundo } from './Clases/Mundo.js';
-import { Usuario, Red } from './Clases/Usuario.js';
-import { Media } from './Clases/Media.js'
-import { crearP, modificarP, cargarDatos, armarSlider, administrarSalas } from './funciones.js';
+import * as THREE from "https://unpkg.com/three@0.121.1/build/three.module.js";
+import { Mundo } from "./Clases/Mundo.js";
+import { Usuario, Red } from "./Clases/Usuario.js";
+import { Media } from "./Clases/Media.js";
+import {
+  crearP,
+  modificarP,
+  cargarDatos,
+  administrarSalas
+} from "./funciones.js";
 import {
   inicioCustomizacionA,
   animarCustomizacionA,
@@ -16,8 +21,8 @@ import {
   inicioEtapa4,
   animarEtapa4,
   inicioContemplacion,
-  animarContemplacion
-} from './estados.js'
+  animarContemplacion,
+} from "./estados.js";
 
 let mundo;
 let media;
@@ -34,8 +39,8 @@ let int = {
   guardar: true,
   salas: 1,
   salaAct: 0,
-  maxUsuarios: 50
-}
+  maxUsuarios: 50,
+};
 let mov = {
   adelante: false,
   atras: false,
@@ -48,8 +53,8 @@ let mov = {
   rota: false,
   mov: Math.PI,
   dir: 1,
-  movs: Math.PI
-}
+  movs: Math.PI,
+};
 
 function inicializar() {
   mundo = new Mundo();
@@ -60,10 +65,10 @@ function inicializar() {
   int.raycaster = new THREE.Raycaster();
   int.mouse = new THREE.Vector2();
   // Evento Resize y Condición de Salida
-  window.addEventListener('resize', onWindowResize);
-  window.addEventListener('beforeunload', function(e) {
+  window.addEventListener("resize", onWindowResize);
+  window.addEventListener("beforeunload", function (e) {
     if (int.estado != "contemplacion") {
-      let confirmationMessage = 'La experiencia aun no termina';
+      let confirmationMessage = "La experiencia aun no termina";
       (e || window.event).returnValue = confirmationMessage; //Gecko + IE
       return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     }
@@ -74,20 +79,24 @@ function inicializar() {
   // instrucciones
   const ins = document.getElementById("instructions");
   const bl = document.getElementById("blocker");
-  bl.addEventListener('click', function() {
+  bl.addEventListener("click", function () {
     if (media.cargo && salas[0].lista.length > 0) {
       // aca habria que hacer las salas
-      if(int.estado == "intro"){
+      if (int.estado == "intro") {
         administrarSalas(salas, int);
       }
-      ins.style.display = 'none';
-      bl.style.display = 'none';
+      ins.style.display = "none";
+      bl.style.display = "none";
       int.play = true;
     }
   });
   // para debugeo
   crearP("log", "--");
-  THREE.DefaultLoadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+  THREE.DefaultLoadingManager.onProgress = function (
+    url,
+    itemsLoaded,
+    itemsTotal
+  ) {
     //console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
   };
 }
@@ -98,18 +107,31 @@ function animar() {
   if (int.estado === "intro") {
     // Intro --> Carga de archivos
     if (!media.cargo) {
-      media.cargo = media.actualizar();
+      if(salas[0].lista.length > 0 && media.sonidosEnUso.length == 0){
+        media.traerRed(salas[0].lista, mundo.listener);
+      } else if(media.sonidosEnUso.length > 0) {
+        media.cargo = media.actualizar();
+      }
     } else {
-      modificarP("play", "Haga click para comenzar");
+      modificarP("play", "\n\n\n\n Se recomienda usar auriculares para esta experiencia \n\n Click para comenzar");
+      document.getElementById("play").onclick = function(){
+        if (int.estado == "intro") {
+          administrarSalas(salas, int);
+        }
+        ins.style.display = "none";
+        bl.style.display = "none";
+        int.play = true;
+      }
       if (int.play) {
         int.play = false;
-        for(let i = 0; i < salas.length; i++){
+        for (let i = 0; i < salas.length; i++) {
           salas[i].cargarUsuarios(media.colores);
         }
         inicioCustomizacionA(mundo, int, usuario.estilo, media.colores);
       }
     }
   } else if (int.estado === "customizacionA") {
+    document.getElementById("titulo").style.zIndex = "-2"
     // Customización A -->
     animarCustomizacionA(mundo.escena);
     if (usuario.estilo.forma != "--") {
@@ -120,7 +142,15 @@ function animar() {
     // Customización B -->
     animarCustomizacionB(mundo.escena, usuario);
     if (int.play) {
-      inicioEtapa1(mundo, usuario, int, media.sonidos, mov, media.colores, salas[int.salaAct]);
+      inicioEtapa1(
+        mundo,
+        usuario,
+        int,
+        media.sonidos,
+        mov,
+        media.colores,
+        salas[int.salaAct]
+      );
       mundo.contador.empezarReloj();
       media.ubicarCodigo(mundo.escena);
       int.play = false;
@@ -128,7 +158,7 @@ function animar() {
   } else if (int.estado === "etapa1") {
     // Etapa 1 -->
     if (int.play) {
-      inicioEtapa2(int, usuario, mundo, mov, salas[int.salaAct]);
+      inicioEtapa2(int, usuario, mundo, mov, salas);
       mundo.contador.empezarReloj();
       int.play = false;
     }
@@ -158,17 +188,21 @@ function animar() {
     }
   } else if (int.estado === "contemplacion") {
     // Contemplación
-    animarContemplacion(mundo.camara, usuario.estilo.pos, mov, usuario.modelo.position);
+    animarContemplacion(
+      mundo.camara,
+      usuario.estilo.pos,
+      mov,
+      usuario.modelo.position
+    );
   }
   // mov de la figura en espacio3D
   if (int.estado.includes("etapa")) {
     // contador
-    if ( mundo.contador.pasoTiempo() ){
-      if ( int.estado != "etapa4" ){
-      document.getElementById("botonC").disabled = false;
+    if (mundo.contador.pasoTiempo()) {
+      if (int.estado != "etapa4") {
+        document.getElementById("botonC").disabled = false;
       } else {
-        console.log("THIS IS ETAPA 4 PIRIBIRI")
-        if(!salas[int.salaAct].completa){
+        if (!salas[int.salaAct].completa) {
           document.getElementById("botonC").disabled = false;
         }
       }
@@ -177,8 +211,16 @@ function animar() {
     usuario.mover(mundo.camara, mov);
     usuario.actualizarPos(mundo.camara, usuario.limite(195));
     if (int.estado != "etapa1") {
-      modificarP("dato", usuario.texto(mundo.reloj.getElapsedTime()), "55%", "55%");
-      usuario.calcularDistancias(salas[int.salaAct].usuarios, salas[int.salaAct].visible);
+      modificarP(
+        "dato",
+        usuario.texto(mundo.reloj.getElapsedTime(), -1, int.salaAct),
+        "55%",
+        "55%"
+      );
+      usuario.calcularDistancias(
+        salas[int.salaAct].usuarios,
+        salas[int.salaAct].visible
+      );
       salas[int.salaAct].calcularDistanciasRed(usuario);
     }
   }
@@ -187,12 +229,15 @@ function animar() {
 
 /// Programa Principal
 ///// Programa Principal
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-  texto = document.createElement('p');
+if (
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  )
+) {
+  texto = document.createElement("p");
   document.body.append(texto);
   texto.innerText = "Por favor use una computadora para ver esta página";
   document.getElementById("play").innerText = "";
-
 } else {
   inicializar();
   animar();

@@ -3,12 +3,33 @@ html {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: Helvetica, sans-serif;
+  font-family: 'Lucida Sans', sans-serif;
 }
 
 body {
   background: #030303;
   color: #FFF;
+}
+
+p {
+  position: absolute;
+}
+
+#blocker, #instructions, #play, .range-input {
+  z-index: 1;
+}
+
+#titulo {
+  width: 35%;
+  height: auto;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
 }
 
 /* inicio botones salas */
@@ -25,6 +46,10 @@ div.grupo {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  background: rgba(3,3,3,0.5);
 }
 
 .salas {
@@ -35,6 +60,7 @@ div.grupo {
   border: none;
   border-bottom: solid black 1.5px;
   color: #FFF;
+  height: 2em;
 }
 
 .salas:hover {
@@ -58,19 +84,19 @@ div.grupo {
   font-size: 20px;
   position: absolute;
   top: 47%;
+  left: 2%;
   cursor: pointer;
   border: none;
   color: #FFF;
+  z-index: 3;
 }
 
-/* inicio slider */
+/* slider */
 .range-input {
   position: absolute;
   top: 89%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(10,10,10,0.7);
-  padding: 5px 5px;
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -86,15 +112,20 @@ div.grupo {
 }
 
 ::-webkit-slider-thumb, ::-moz-range-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
+  /* Override default look */
   appearance: none;
-  width: 15px; /* Set a specific slider handle width */
-  height: 15px; /* Slider handle height */
-  background: #030303; /* Green background */
+  width: 15px;
+  /* Set a specific slider handle width */
+  height: 15px;
+  /* Slider handle height */
+  background: #030303;
+  /* Green background */
   border-color: #FAFAFA;
   border-width: 2px;
   border-radius: 1px;
-  cursor: pointer; /* Cursor on hover */
+  cursor: pointer;
+  /* Cursor on hover */
 }
 
 .range-input .value {
@@ -110,8 +141,8 @@ div.grupo {
 .range-input .value div {
   transition: all 300ms ease-in-out;
 }
-/* fin slider */
 
+/* instrucciones */
 #blocker {
   position: absolute;
   width: 100%;
@@ -127,20 +158,12 @@ div.grupo {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   position: absolute;
 }
 
-#blocker, #instructions, #play, .range-input {
-  z-index: 1;
-}
-
-p {
-  position: absolute;
-  color: white;
-}
-
+/* botones */
 button {
   margin: 20px;
   outline: none;
@@ -150,7 +173,7 @@ button {
   width: 130px;
   height: 45px;
   left: 82%;
-  top: 95%;
+  top: 82%;
   background: #030303;
   cursor: pointer;
   transition: all 0.1s ease;
@@ -244,6 +267,7 @@ button {
   width: 100%;
 }
 
+/* checkbox */
 .frame {
   position: absolute;
   top: 0;
@@ -291,65 +315,65 @@ label {
 
 /* rosa */
 #rosa, #rosa:checked, #rosa:active {
-  border: 1px solid #EC90BF;
+  border: 1px solid #FC3DC9;
 }
 
 #rosa:checked {
-  background-color: #EC90BF;
+  background-color: #FC3DC9;
 }
 
-/* rosita */
-#rosita, #rosita:checked, #rosita:active {
-  border: 1px solid #F15733;
+/* rojo */
+#rojo, #rojo:checked, #rojo:active {
+  border: 1px solid #FB3030;
 }
 
-#rosita:checked {
-  background-color: #F15733;
+#rojo:checked {
+  background-color: #FB3030;
 }
 
 /* fucsia */
 #fucsia, #fucsia:checked, #fucsia:active {
-  border: 1px solid #FC3DC9;
+  border: 1px solid #F43F5E;
 }
 
 #fucsia:checked {
-  background-color: #FC3DC9;
+  background-color: #F43F5E;
 }
 
 /* naranja */
 #naranja, #naranja:checked, #naranja:active {
-  border: 1px solid #FDA449;
+  border: 1px solid #F97316;
 }
 
 #naranja:checked {
-  background-color: #FDA449;
+  background-color: #F97316;
 }
 
-/* anaranjado */
-#anaranjado, #anaranjado:checked, #anaranjado:active {
-  border: 1px solid #F2B361;
+/* oro */
+#oro, #oro:checked, #oro:active {
+  border: 1px solid #F2B311;
 }
 
-#anaranjado:checked {
-  background-color: #F2B361;
+#oro:checked {
+  background-color: #F2B311;
 }
 
 /* amarillo */
 #amarillo, #amarillo:checked, #amarillo:active {
-  border: 1px solid #E4BE5B;
+  border: 1px solid #FBFF20;
 }
 
 #amarillo:checked {
-  background-color: #E4BE5B;
+  background-color: #FBFF20;
 }
 
 /* verde */
 #verde, #verde:checked, #verde:active {
-  border: 1px solid #7DFF9B;
+  border: 1px solid #A3E635;
 }
 
 #verde:checked {
-  background-color: #7DFF9B;
+  background-color: #A3E635;
 }
 
 /* celeste */
@@ -362,12 +386,12 @@ label {
 }
 
 /* cian */
-#cian, #cian:checked, #cian:active {
-  border: 1px solid #39C7CB;
+#esmeralda, #esmeralda:checked, #esmeralda:active {
+  border: 1px solid #4ADE80;
 }
 
-#cian:checked {
-  background-color: #39C7CB;
+#esmeralda:checked {
+  background-color: #4ADE80;
 }
 
 /* azul */
@@ -397,7 +421,7 @@ label {
   background-color: #C86DDE;
 }
 
-/* */
+/* input de texto */
 input,
 span,
 label,
@@ -543,4 +567,3 @@ input.question:invalid~input[type="submit"], textarea.question:invalid~input[typ
     opacity: 1;
   }
 }
-

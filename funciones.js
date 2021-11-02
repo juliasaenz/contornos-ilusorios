@@ -49,8 +49,8 @@ export function crearGrupo(int, salas, escena, media, user) {
         salas[int.salaAct].reiniciarRed(media.colores, user, escena, media.sonidos);
         let x = salas[int.salaAct].contarVisibles().toString();
         let y = salas[int.salaAct].lista.length.toString();
-        console.log("viendo: ", x)
-        modificarP("stats", "viendo: " + x + "/" + y);
+        modificarP("stats", "viendo " + x + " de " + y + " figuras");
+        // click info
         // Boton continuar
         if(y == int.maxUsuarios){ /// MAX
           document.getElementById("botonC").disabled = true
@@ -83,14 +83,12 @@ export function administrarSalas(salas, int) {
       salas[i].completa = true
     }
   }
-  if (completas > salas.length / 2) {
-    // mas de la mitad de las salas estan completas
+  if (completas > (salas.length / 3)*2) {
+    // mas de dos tercios de las salas completas
     let red = new Red() // creo una nueva
     salas.push(red)
   }
-  console.log("total salas: ", salas.length, salas)
   int.salaAct = parseInt(Math.random() * salas.length);
-  console.log("estoy en sala: ", int.salaAct)
 }
 // CSS Slider
 export function armarSlider(reloj) {
@@ -104,7 +102,7 @@ export function armarSlider(reloj) {
   let step = parseFloat(rangeInput.step);
 
   for (let i = start; i <= end; i += step) {
-    rangeValue.innerHTML += '<div>' + i + '</div>';
+    rangeValue.innerHTML += '<div>' + i + ' % similitud' + '</div>';
   }
 
   rangeInput.addEventListener("input", function () {
@@ -133,12 +131,9 @@ function crearSlider() {
 export function cargarDatos(red, int) {
   var xhr = new XMLHttpRequest();
   if (int.modo == "php") {
-    //aca iria todo el codigo de php
     recibirPHP(red.lista);
   }
   if (int.modo == "json") {
-    // Cambiar esto
-    // usuarios.json  --> datos[2].data --> el arreglo de usuarios
     xhr.open('GET', './data/figuras.json', true);
     xhr.onload = function () {
       if (this.status == 200) {
@@ -152,8 +147,6 @@ export function cargarDatos(red, int) {
   }
 }
 export function enviarPHP(dato) {
-  //console.log("Mandando JSON a PHP...")
-
   let xhr = new XMLHttpRequest()
   xhr.open("POST", "./php/enviar.php", true)
   xhr.onload = function () {
@@ -166,16 +159,12 @@ export function enviarPHP(dato) {
 }
 
 function recibirPHP(listaFinal) {
-  //console.log("Recibiendo JSON de PHP...");
-
   let xhr = new XMLHttpRequest();
   xhr.open("GET", "./php/recibir.php", true);
   xhr.onload = function () {
     if (this.status == 200) {
       let lista = JSON.parse(this.responseText);
-      //console.log(lista);
       configurarUsuarios(lista, listaFinal);
-      //console.log(listaFinal);
     }
   }
   xhr.send();

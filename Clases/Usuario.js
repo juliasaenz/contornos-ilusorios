@@ -17,7 +17,6 @@ export class Usuario {
       }
     }
     this.modelo;
-    //this.modelo = armarModelo(this.id, this.estilo, colores);
     this.tiempo = tiempo;
     this.conexiones = [];
     this.vel = 30.0;
@@ -33,7 +32,6 @@ export class Usuario {
   }
   crearID() {
     //Crea una id única a partir del nombre y un número random
-    console.log("id: ", this.id);
     if (this.id == -1) {
       const n = parseInt(Math.random() * 9999);
       this.id = this.nombre.concat("_", n.toString());
@@ -87,7 +85,7 @@ export class Usuario {
     const res = scale(m, 0, 11, 0, 1);
     return res;
   }
-  texto(reloj = -1, similitud = -1) {
+  texto(reloj = -1, similitud = -1, salaAct = -7) {
     // Pasa la similitud a texto
     const t = "Usuario: ".concat(this.nombre, "\n");
     const t2 = "ID: ".concat(this.id, "\n");
@@ -95,9 +93,8 @@ export class Usuario {
     const t4 = "Color: ".concat(this.estilo.color, "\n");
     const t5 = "Posición: ".concat(parseInt(this.estilo.pos.x), ", ", parseInt(this.estilo.pos.y), ", ", parseInt(this.estilo.pos.z), "\n");
     const t6 = "Sonido: ".concat(this.estilo.sonido, "\n");
-    //const t7 = "Formas cerca: ".concat(this.conexiones.length, "\n");
-    const t7 = ""
-    const t10 = "Sala: ".concat(this.sala, "\n");
+    const t7 = "Categoría sonido: ".concat(this.estilo.sonido[1], "\n")
+    const t10 = "Sala: ".concat(salaAct, "\n");
     let t8 = "";
     if (reloj != -1) {
       t8 = "Tiempo: ".concat(parseInt(this.tiempo + reloj), "\n");
@@ -106,7 +103,7 @@ export class Usuario {
     }
     let t9 = "";
     if (similitud != -1) {
-      t9 = "Similitud con usuario: ".concat(similitud * 100, "%\n");
+      t9 = "Similitud con usuario: ".concat(parseInt(similitud * 100), "%\n");
     }
     const tFinal = t.concat(t2, t3, t4, t5, t6, t7, t8, t9, t10);
     return tFinal;
@@ -125,7 +122,6 @@ export class Usuario {
       return true;
     } else if (this.estilo.pos.z < -lim) {
       this.estilo.pos.z = lim - 5;
-      console.log("PAM")
       return true;
     }
     return false;
@@ -203,7 +199,6 @@ export class Red {
       this.usuarios.push(f);
       this.visible.push(false);
     }
-    //console.log(this.lista.length, this.usuarios.length, this.visible.length);
   }
   calcularSimilitud(actual) {
     for (let i = 0; i < this.usuarios.length; i++) {
@@ -245,8 +240,6 @@ export class Red {
         }
       }
     }
-    //console.log(this.visible)
-    console.log("Estoy entrando a mostrar en mundo y estos quedan visibles: ", this.visible.length)
   }
   sacarModelos() {
     let mods = [];
@@ -256,10 +249,8 @@ export class Red {
     return mods;
   }
   reiniciarRed(colores, user, escena, sonidos){
-    //this.cargarUsuarios(colores)
     this.calcularSimilitud(user)
     this.mostrarEnMundo(escena, sonidos, user.filtro)
-    console.log("Reinicie Red")
   }
   //Fin clase
 }

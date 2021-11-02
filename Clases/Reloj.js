@@ -10,7 +10,6 @@ export class Reloj {
    }
    pasoTiempo(){
       if(this.reloj.running && this.reloj.getElapsedTime() >= this.tiempo){
-         console.log("paso el tiempo")
          this.reloj.stop()
          return true
       } 

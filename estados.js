@@ -34,7 +34,7 @@ export function animarEtapa4(int, mov, m, usuario, red, sonidos) {
     red.mostrarEnMundo(m.escena, sonidos, val.value / 100);
     let x = red.contarVisibles().toString();
     let y = red.lista.length.toString();
-    modificarP("stats", "viendo: " + x + "/" + y + " figuras");
+    modificarP("stats", "viendo " + x + " de " + y + " figuras");
     usuario.filtro = val.value / 100
   }
 }
@@ -96,30 +96,33 @@ export function inicioEtapa3(mundo, int, mov, usuario, red, sonidos) {
   red.mostrarEnMundo(mundo.escena, sonidos, usuario.filtro);
   let x = red.contarVisibles().toString();
   let y = red.lista.length.toString();
-  modificarP("stats", "viendo: " + x + "/" + y + " figuras");
-
+  modificarP("stats", "viendo " + x + " de " + y + " figuras");
+  mundo.escena.fog.near += 20;
 }
 // Etapa 2
 export function animarEtapa2() {
   mostrarDatos(0.02);
 }
-export function inicioEtapa2(int, user, m, mov, red) {
+export function inicioEtapa2(int, user, m, mov, salas) {
   int.estado = "etapa2";
   user.vel = 25.0;
-  crearP("dato", user.texto(m.reloj.getElapsedTime()), "55%", "55%");
+  crearP("dato", user.texto(m.reloj.getElapsedTime(), -1, int.salaAct), "55%", "55%");
   // click
   document.onpointerdown = function() {
-    let mods = red.sacarModelos();
-    if (int.estado != "contemplacion") {
-      int.oldX = int.mouse.x;
-      int.mouse.x = (event.clientX / m.renderizador.domElement.clientWidth) * 2 - 1;
-      int.mouse.y = -(event.clientY / m.renderizador.domElement.clientHeight) * 2 + 1;
-      clickDatos(int, m.camara, mods, red);
+    for(let i = 0; i < salas.length; i++){
+      let mods = salas[i].sacarModelos();
+      if (int.estado != "contemplacion") {
+        int.oldX = int.mouse.x;
+        int.mouse.x = (event.clientX / m.renderizador.domElement.clientWidth) * 2 - 1;
+        int.mouse.y = -(event.clientY / m.renderizador.domElement.clientHeight) * 2 + 1;
+        clickDatos(int, m.camara, mods, salas[i]);
+      }
     }
   }
-  let x = red.contarVisibles().toString();
-  let y = red.lista.length.toString();
-  crearP("stats", "viendo: " + x + "/" + y + " figuras", "5%", "85%");
+  let x = salas[int.salaAct].contarVisibles().toString();
+  let y = salas[int.salaAct].lista.length.toString();
+  crearP("stats", "viendo " + x + " de " + y + " figuras", "5%", "85%");
+  m.escena.fog.near += 20;
 
 }
 
@@ -132,7 +135,7 @@ function clickDatos(int, camara, modelos, red) {
       if (inter.name === red.usuarios[i].id && red.visible[i]) {
         const x = (scale(int.mouse.x, -1, 1, 0, window.innerWidth) - 10).toString().concat("px");
         const y = (scale(-int.mouse.y, -1, 1, 0, window.innerHeight) - 10).toString().concat("px");;
-        crearP("uDato", red.usuarios[i].texto(), x, y);
+        crearP("uDato", red.usuarios[i].texto(-1, red.similitud[i], int.salaAct), x, y);
         return
       }
     }
@@ -151,7 +154,6 @@ export function inicioEtapa1(m, user, int, sonidos, mov, colores, red) {
   user.tiempo = m.reloj.getElapsedTime();
   user.randomPosInicial();
   user.setSala(int.salaAct)
-  //console.log("pos: ", user.estilo.pos.x)
   user.actualizarPos(m.camara, 200);
   m.escena.add(user.modelo);
   m.camara.lookAt(user.modelo.position);
@@ -199,7 +201,6 @@ export function inicioCustomizacionB(m, estilo, media, int) {
     const ult = event["target"];
     if (ult.id in media.colores) {
       // si el botón es uno de color
-      //console.log("color");
       f.material.color.set(media.colores[ult.id]);
       // solo poder seleccionar 1
       if (ult.id == estilo.color) {
@@ -242,7 +243,6 @@ export function inicioCustomizacionB(m, estilo, media, int) {
         }
       }
     }
-    //console.log(ult.id);
   })
 }
 
@@ -255,7 +255,6 @@ function agregarBotones(d, colores, sonidos) {
     let b = document.createElement("input");
     b.type = "checkbox";
     b.setAttribute("id", key);
-    console.log("la kkey del color: ", key)
     l.style.top = (4 * i).toString().concat("%");
     l.style.left = "10%";
     l.appendChild(b);
@@ -330,7 +329,6 @@ export function inicioCustomizacionA(m, int, estilo, colores) {
   m.escena.add(f1);
   m.escena.add(f2);
   window.addEventListener('click', function clickA() {
-    //console.log("clickA")
     int.mouse.x = (event.clientX / m.renderizador.domElement.clientWidth) * 2 - 1;
     int.mouse.y = -(event.clientY / m.renderizador.domElement.clientHeight) * 2 + 1;
     int.raycaster.setFromCamera(int.mouse, m.camara);

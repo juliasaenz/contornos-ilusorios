@@ -114,14 +114,20 @@ function animar() {
       }
     } else {
       modificarP("play", "\n\n\n\n Se recomienda usar auriculares para esta experiencia \n\n Click para comenzar");
-      document.getElementById("play").onclick = function(){
-        if (int.estado == "intro") {
-          administrarSalas(salas, int);
+      const bl = document.getElementById("play");
+      const ins = document.getElementById("instructions");
+      const pp = document.getElementById("blocker");
+      pp.addEventListener("click", function () {
+        if (media.cargo && salas[0].lista.length > 0) {
+        // aca habria que hacer las salas
+          if (int.estado == "intro") {
+            administrarSalas(salas, int);
+          }
+          ins.style.display = "none";
+          bl.style.display = "none";
+          int.play = true;
         }
-        ins.style.display = "none";
-        bl.style.display = "none";
-        int.play = true;
-      }
+      });
       if (int.play) {
         int.play = false;
         for (let i = 0; i < salas.length; i++) {

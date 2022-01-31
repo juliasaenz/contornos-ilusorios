@@ -49,7 +49,7 @@ export class Mundo {
     this.reloj.start();
 
     ////////// Contador
-    this.contador = new Reloj(1) //CAMBIAR
+    this.contador = new Reloj(15) //CAMBIAR
   }
   crearFondoCustomizacion() {
     this.escena.background = new THREE.Color(0x030002);
